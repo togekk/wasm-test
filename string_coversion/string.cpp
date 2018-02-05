@@ -6,10 +6,16 @@ extern "C" {
 
 char *s = (char *)"String from C++";
 
+    
+// get memory address of the string
+    
 char *getOffset()
 {
     return &s[0];
 }
+
+
+// get length of the string
 
 size_t getLen()
 {
@@ -17,6 +23,9 @@ size_t getLen()
     return len;
 }
 
+    
+// get string from javascript
+    
 void getString(char *str)
 {
     printf("%s\n", str);
