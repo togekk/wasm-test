@@ -13,6 +13,3 @@ yarn.lock
 
 # vs code config
 /.vscode
-
-# webpack
-/webpack.config.js
