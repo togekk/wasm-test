@@ -1,32 +1,51 @@
 #include <stdio.h>  // for 'printf' function
 #include <string.h> // for 'strlen' function
+#include <string>   // for 'strlen' function
 #include <stdlib.h> // for 'free' function
 using namespace std;
 
 extern "C" {
 
-char *s = (char *)"String from C++";
+const char *s[] = {"Tom", "Mary", "Stacy", "Tiffany", "Emily", "John", "Michael"};
+string str;
+int array_length = sizeof(s) / sizeof(*s);
+char *str2;
 
 // get memory address of the string
-
-char *getOffset()
+char *sendArrayToJS()
 {
-    return &s[0];
+    for (int i = 0; i < array_length; i++)
+    {
+        str.append(s[i]);
+        if (i != array_length - 1)
+        {
+            str.append(",");
+        }
+    };
+    str2 = (char *)str.c_str();
+    return &str2[0];
 }
-
-// get length of the string
 
 size_t getLen()
 {
-    size_t len = strlen(s);
+    size_t len = strlen(str2);
     return len;
 }
 
+// // // get length of the string
+
+// size_t getLen()
+// {
+//     size_t len = strlen(s);
+//     return len;
+// }
+
 // get string from javascript
 
-void getString(char *str, int length)
+void getArrayFromJS(char *str, int length)
 {
-    printf("%s\n", "Array from JavaScript to WASM");
+
+    printf("%s\n", "***** Array from JavaScript to WASM *****");
 
     char **arr = new char *[length];
 
