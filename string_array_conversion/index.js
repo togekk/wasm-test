@@ -10,7 +10,6 @@ MyCode().then(Module => {
         'Emily',
         'John',
         'Michael',
-        '鄭為平'
     ];
     const string = string_array.toString();
     const lengthBytes = Module.lengthBytesUTF8(string) + 1;               // get string length in bytes
