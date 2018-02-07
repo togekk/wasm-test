@@ -11,7 +11,9 @@ string str;
 int array_length = sizeof(s) / sizeof(*s);
 char *str2;
 
+    
 // get memory address of the string
+    
 char *sendArrayToJS()
 {
     for (int i = 0; i < array_length; i++)
@@ -26,20 +28,16 @@ char *sendArrayToJS()
     return &str2[0];
 }
 
+    
+// get length of the string
+    
 size_t getLen()
 {
     size_t len = strlen(str2);
     return len;
 }
 
-// // // get length of the string
-
-// size_t getLen()
-// {
-//     size_t len = strlen(s);
-//     return len;
-// }
-
+    
 // get string from javascript
 
 void getArrayFromJS(char *str, int length)
