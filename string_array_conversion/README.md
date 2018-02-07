@@ -1,7 +1,7 @@
 # String Array Conversion
 Send string arrays between JavaScript and Webassembly
 
-### [Live demo](https://togekk.github.io/wasm/)
+### [Live demo](https://togekk.github.io/wasm/string_array_conversion/)
 
 #### Install webpack
 `npm i --save-dev webpack`
