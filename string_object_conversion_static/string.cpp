@@ -1,7 +1,6 @@
 #include <stdio.h>  // for 'printf' function
 #include <string.h> // for 'strlen' function
 #include <stdlib.h> // for 'free' function
-#include <vector>
 
 using namespace std;
 
@@ -43,12 +42,17 @@ void getObjectFromJS(char *str, int length)
 
     printf("%s\n", "***** Object from JavaScript to WASM *****");
 
-    char key_find[] = "nationality";
+    class person
+    {
+      public:
+        char *name;
+        char *age;
+        char *nationality;
+        char *date_of_birth;
+    };
 
-    char **key = new char *[length];
     char **value = new char *[length];
-    int key_id, value_id = 0;
-    vector<pair<const char *, const char *> > obj;
+    int value_id = 0;
 
     for (int i = 0; i < 8; i++)
     {
@@ -56,40 +60,27 @@ void getObjectFromJS(char *str, int length)
         {
             strtok(str, "\"");
         }
-        if (i % 2 == 0)
-        {
-            key[key_id] = strtok(NULL, ",\":}");
-            key_id++;
-        }
-        else
+        if (i % 2 != 0)
         {
             value[value_id] = strtok(NULL, ",\":}");
             value_id++;
         }
-    }
-
-    for (int i = 0; i < 4; i++)
-    {
-        obj.push_back(make_pair(key[i], value[i]));
-    }
-
-    int count = 0;
-    bool stop = false;
-
-    do
-    {
-        // printf("%d %s\n", count, obj[count].first);
-        // printf("%d\n", strcmp(obj[count].first, key_find));
-        if (strcmp(obj[count].first, key_find) == 0)
-        {
-            stop = true;
-        }
         else
         {
-            count++;
-        };
-    } while (!stop && count < 4);
-    printf("%s\n", obj[count].second);
+            strtok(NULL, ",\":}");
+        }
+    }
+
+    person obj;
+    obj.name = value[0];
+    obj.age = value[1];
+    obj.nationality = value[2];
+    obj.date_of_birth = value[3];
+
+    printf("Name: %s\n", obj.name);
+    printf("Age: %s\n", obj.age);
+    printf("Nationality: %s\n", obj.nationality);
+    printf("Date_of_birth: %s\n", obj.date_of_birth);
 
     free(str);
 }

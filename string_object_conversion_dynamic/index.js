@@ -23,9 +23,6 @@ MyCode().then(Module => {
     };
 
     send_string(string_object);
-
-
-
 })
 
 function send_string(obj) {
