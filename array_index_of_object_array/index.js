@@ -33,9 +33,10 @@ MyCode().then(Module => {
         }
     ];
 
-    const value = "Simon";
+    const value = "David";
 
-    console.log(arrayIndexOf(string_object, value));
+    document.write("Object 'David' index: " + arrayIndexOf(string_object, value));
+    document.close();
 })
 
 function send_string(string) {
