@@ -1,7 +1,7 @@
 #include <stdio.h>  // for 'printf' function
 #include <string.h> // for 'strlen' function
 #include <stdlib.h> // for 'free' function
-#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -48,7 +48,7 @@ void getObjectFromJS(char *str, int length)
     char **key = new char *[length];
     char **value = new char *[length];
     int key_id, value_id = 0;
-    vector<pair<const char *, const char *>> obj;
+    map<const char *, const char *> obj;
 
     for (int i = 0; i < 8; i++)
     {
@@ -70,27 +70,10 @@ void getObjectFromJS(char *str, int length)
 
     for (int i = 0; i < 4; i++)
     {
-        obj.push_back(make_pair(key[i], value[i]));
+        obj[key[i]] = value[i];
+        printf("%s\n", obj[key[i]]);
     }
-
-    int count = 0;
-    bool stop = false;
-
-    do
-    {
-        // printf("%d %s\n", count, obj[count].first);
-        // printf("%d\n", strcmp(obj[count].first, key_find));
-        if (strcmp(obj[count].first, key_find) == 0)
-        {
-            stop = true;
-        }
-        else
-        {
-            count++;
-        };
-    } while (!stop && count < 4);
-    printf("Nationality: %s\n", obj[count].second);
-
+    
     free(str);
 }
 }
