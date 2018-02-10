@@ -22,13 +22,18 @@ MyCode().then(Module => {
         date_of_birth: "01/01/1900"
     };
 
-    send_string(string_object);
+    const string = JSON.stringify(string_object);
+    const obj_heap = send_string(string);
+    const str_heap = send_string('date_of_birth');
+    const offset = mod._getObjectFromJS(obj_heap, Object.keys(string_object).length, str_heap);             // call c function with memory address
+    const len = Module._getLen(offset);                                         // get string length
+    const result = Module.Pointer_stringify(offset, len);                    // use 'Pointer_stringify' function to convert to javascript string
+    console.log(result);
 })
 
-function send_string(obj) {
-    const string = JSON.stringify(obj);
+function send_string(string) {
     const lengthBytes = mod.lengthBytesUTF8(string) + 1;               // get string length in bytes
     const stringOnWasmHeap = mod.getMemory(lengthBytes);               // get memory address in wasm heap
     mod.stringToUTF8(string, stringOnWasmHeap, lengthBytes + 1);       // use 'stringToUTF8' funciton to write string in wasm heap
-    mod._getObjectFromJS(stringOnWasmHeap, Object.keys(obj).length);             // call c function with memory address
+    return stringOnWasmHeap;
 }

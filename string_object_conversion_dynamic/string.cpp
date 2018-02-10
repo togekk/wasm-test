@@ -1,32 +1,21 @@
 #include <stdio.h>  // for 'printf' function
-#include <string.h> // for 'strlen' function
+// #include <string.h> // for 'strlen' function
+#include <string> // for 'strlen' function
 #include <stdlib.h> // for 'free' function
 #include <map>
+#include <vector>
 
 using namespace std;
 
 extern "C" {
 
-// get memory address of the string
-// char *sendArrayToJS()
-// {
-//     for (int i = 0; i < array_length; i++)
-//     {
-//         str.append(s[i]);
-//         if (i != array_length - 1)
-//         {
-//             str.append(",");
-//         }
-//     };
-//     str2 = (char *)str.c_str();
-//     return &str2[0];
-// }
+// get length of the string
 
-// size_t getLen()
-// {
-//     size_t len = strlen(str2);
-//     return len;
-// }
+size_t getLen(char* s)
+{
+    size_t len = strlen(s);
+    return len;
+}
 
 // // // get length of the string
 
@@ -38,18 +27,15 @@ extern "C" {
 
 // get string from javascript
 
-void getObjectFromJS(char *str, int length)
+char* getObjectFromJS(char *str, int length, char* key_selected)
 {
 
-    printf("%s\n", "***** Object from JavaScript to WASM *****");
-
-    char key_find[] = "nationality";
-
-    char **key = new char *[length];
+    vector<string> key;
     char **value = new char *[length];
-    int key_id, value_id = 0;
-    map<const char *, const char *> obj;
-
+    int key_id = 0;
+    int value_id = 0;
+    map<string, const char *> obj;
+    
     for (int i = 0; i < 8; i++)
     {
         if (i == 0)
@@ -71,9 +57,13 @@ void getObjectFromJS(char *str, int length)
     for (int i = 0; i < 4; i++)
     {
         obj[key[i]] = value[i];
-        printf("%s\n", obj[key[i]]);
     }
+
+    char *result = (char*)obj[key_selected];
     
+    return result;
+    
+    free(key_selected);
     free(str);
 }
 }
