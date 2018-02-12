@@ -16,4 +16,4 @@ NAME="'MyCode'" -s EXTRA_EXPORTED_RUNTIME_METHODS="['Pointer_stringify', 'length
 " -s EXPORTED_FUNCTIONS="['_sendArrayToJS', '_getArrayFromJS', '_getLen']" -o string.js`
 
 #### Compile webpack bundle
-`npx webpack --config ../webpack.config.js`
+`npx webpack --config webpack.config.js`
