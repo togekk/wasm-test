@@ -15,3 +15,7 @@ Testing performance between JavaScript(For Loops) and Webassembly(Do...While Loo
 
 #### Compile webpack bundle
 `npx webpack --config webpack.config.js`
+
+
+### Reference
+[Random Object Generator](https://stackoverflow.com/questions/2443901/random-object-generator-in-javascript)
