@@ -51,6 +51,7 @@ void getObjectFromJS(char *arr, int array_length, int obj_length)
 
     char **value = new char *[obj_length];
     int value_id = 0;
+    int id = -1;
 
     person *obj = new person[obj_length];
 
@@ -66,12 +67,20 @@ void getObjectFromJS(char *arr, int array_length, int obj_length)
                 if (j % 3 == 0) {
                     value[value_id] = strtok(NULL, "{,\"}");
                     // printf("%s\n", value[value_id]);
+                    if (strcmp(value[value_id], "aa") == 0) {
+                        id = i;
+                        break;
+                    }
                     value_id++;
                 } else {
                     strtok(NULL, "{,\"}");
                 }
             }
         };
+
+        if (strcmp(value[value_id], "aa") == 0) {
+            break;
+        }
 
         obj[i].name = value[i * 4];
         obj[i].age = value[i * 4 + 1];
@@ -82,6 +91,9 @@ void getObjectFromJS(char *arr, int array_length, int obj_length)
         printf("Nationality: %s\n", obj[i].nationality);
         printf("Date_of_birth: %s\n", obj[i].date_of_birth);
     };
+
+    printf("%d\n", id);
+    
 
     // for (int i = 0; i < 3; i++)
     // {
