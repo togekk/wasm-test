@@ -15,6 +15,7 @@ int arrayIndexOf(char *arr, char *value_selected, int arr_length, int key_length
     char *a;
     int id = 0;
     int id_found = -1;
+    int len = strlen(value_selected);
 
     strtok(arr, "\"");
 
@@ -22,13 +23,13 @@ int arrayIndexOf(char *arr, char *value_selected, int arr_length, int key_length
     {
 
         a = strtok(NULL, "{,\"}");
-        if (strcmp(a, value_selected) == 0)
+        if (memcmp(a, value_selected, len) == 0)
         {
             id_found = id;
         }
         id++;
 
-    } while (strcmp(a, value_selected) != 0 && id < arr_length * key_length * 3);
+    } while (memcmp(a, value_selected, len) != 0 && id < arr_length * key_length * 3);
 
     // if (id_found >= 0) {
     //     return id_found / key_length / 3;
@@ -45,20 +46,34 @@ vector<string> key;
 int value_id = 0;
 typedef map<pair<int, string>, const char *> obj_type;
 obj_type obj;
+int *len;
 
-int getObjectFromJS(char *key_2, char *value, int array_length, int object_length)
+void getObjectFromJS(char *key_2, char *value, int array_length, int object_length)
 {
     key.push_back(key_2);
-    obj[make_pair(value_id / 4, key[value_id])] = value;
-    if (strcmp(value, (const char *)"sss") == 0)
-    {
-        int id_found = value_id;
-    }
-    else
-    {
-        value_id++;
-    };
+    obj[make_pair(value_id / object_length, key[value_id])] = value;
+    value_id++;
+}
 
-    return value_id;
+int arrayIndexOf2(char *key_2, char *value, int array_length, int object_length)
+{
+    int id_found;
+    int count;
+    int len = strlen(value);
+
+    for (int i = 0; i < array_length; i++)
+    {
+        for (int j = 0; j < object_length; j++)
+        {
+            if (memcmp(obj[make_pair(i, key_2)], value, len) == 0)
+            {
+                // id_found = value_id;
+                break;
+            }
+            count++;
+        }
+    }
+
+    return count;
 }
 }

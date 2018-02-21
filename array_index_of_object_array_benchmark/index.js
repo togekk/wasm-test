@@ -1,6 +1,8 @@
 var MyCode = require('./string.js'); // import modularized 'MyCode' function
 
 let mod;
+const key_heap = [];
+const obj_heap = [];
 
 MyCode().then(Module => {
 
@@ -9,9 +11,10 @@ MyCode().then(Module => {
 
     document.write('Start Generating<br>Array size: 5000, Object size: 2000 keys<br>');
     window.setTimeout(function () {
-        for (let a = 0; a < 5000; a++) {
-            string_object.push(createRandomObj(200));
+        for (let a = 0; a < 500000; a++) {
+            string_object.push(createRandomObj(10));
         }
+        arrayIndexOfMix2(string_object);
     }, 1);
 
     window.setTimeout(function () {
@@ -44,11 +47,12 @@ MyCode().then(Module => {
     }, 1);
     window.setTimeout(function () {
         const start4 = new Date();
-        document.write('Total loops: ' + arrayIndexOfMix2(string_object, value) + '<br>');
+        document.write('Total loops: ' + mod._arrayIndexOf2(send_string('aaa'), send_string(value), string_object.length, Object.keys(string_object[0]).length) + '<br>');
         const end4 = new Date() - start4;
         document.write(end4 + ' ms<br>');
         document.close();
     }, 1);
+    // mod._arrayIndexOf2(send_string('aaa'), send_string(value), string_object.length, Object.keys(string_object[0]).length)
     free_mem(string_object);
 })
 
@@ -63,12 +67,12 @@ function arrayIndexOfJS(obj_arr, value) {
     let id = -1;
     let count = 0;
     obj_arr.forEach((obj_each, index) => {
-        Object.values(obj_each).forEach(value_each => {
-            count++;
-            if (value_each === value) {
-                id = index;
-            }
-        })
+        // Object.values(obj_each).forEach(value_each => {
+        if (obj_each["aaa"] === value) {
+            id = index;
+        }
+        count++;
+        // })
     })
     return count;
 }
@@ -93,11 +97,8 @@ function arrayIndexOfMix(obj_arr, value) {
     return count;
 }
 
-function arrayIndexOfMix2(obj_arr, value) {
-    let count = 0;
-    const value_selected = send_string(value);
-    const key_heap = [];
-    const obj_heap = [];
+function arrayIndexOfMix2(obj_arr) {
+    // const value_selected = send_string(value);
     obj_arr.forEach((obj_each, index) => {
         Object.keys(obj_each).forEach((key_each) => {
             key_heap[index] = [];
@@ -106,15 +107,8 @@ function arrayIndexOfMix2(obj_arr, value) {
             key_heap[index][key_each] = send_string(key_each.toString());
             obj_heap[index][key_each] = send_string(obj_each[key_each].toString());
             mod._getObjectFromJS(key_heap[index][key_each], obj_heap[index][key_each], obj_arr.length, Object.keys(obj_arr[0]).length);
-            count++;
         });
     });
-
-    // const id = mod._getValueFromObject(id, send_string(key));
-
-
-
-    return count;
 }
 
 function free_mem(obj_arr) {
