@@ -1,0 +1,21 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "emcc string.cpp -Oz --llvm-opts 3 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME=\"'MyCode'\" -o string.js",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "emcc",
+            "type": "shell",
+            "command": "emcc mouse.cpp -Oz -s WASM=1 -o mouse.js",
+        }
+    ]
+}
