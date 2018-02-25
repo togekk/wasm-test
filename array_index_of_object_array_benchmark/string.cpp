@@ -138,6 +138,8 @@ int arrayIndexOf(char *arr, char *value)
     // return count;
     // printf("%s\n", arr);
     search(arr, value);
+    free(arr);
+    free(value);
 
     return 0;
 }

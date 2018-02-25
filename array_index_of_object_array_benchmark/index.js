@@ -45,13 +45,6 @@ MyCode().then(Module => {
         document.write('Total loops: ' + arrayIndexOfWASM('aaa', value, string_object) + '<br>');
         let end4 = new Date() - start4;
         document.write(end4 + ' ms<br>');
-        // document.close();
-    }, 1);
-    window.setTimeout(function () {
-        let start4 = new Date();
-        document.write('Total loops: ' + arrayIndexOfWASM('bbb', 'fff', string_object) + '<br>');
-        let end4 = new Date() - start4;
-        document.write(end4 + ' ms<br>');
         document.close();
     }, 1);
 })
