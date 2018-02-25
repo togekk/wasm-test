@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "emcc string.cpp -Oz --llvm-opts 3 -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME=\"'MyCode'\" -o string.js",
+            "command": "./build.bat",
             "group": {
                 "kind": "build",
                 "isDefault": true
