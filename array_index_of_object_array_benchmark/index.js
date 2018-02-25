@@ -20,16 +20,16 @@ MyCode().then(Module => {
 
     // console.log('Done generating');
 
-    // window.setTimeout(function () {
-    //     document.write('Sending object to wasm...<br>');
-    //     const start = new Date();
-    //     sendObject(string_object);
-    //     const end = new Date() - start;
-    //     document.write(end + ' ms<br>');
-    // }, 1);
+    window.setTimeout(function () {
+        document.write('Sending object to wasm...<br>');
+        const start = new Date();
+        sendObject(string_object);
+        const end = new Date() - start;
+        document.write(end + ' ms<br>');
+    }, 1);
 
     const value = "sss";
-    // const a = arrayIndexOfWASM('aaa', value, string_object);
+    // const a = arrayIndexOfWASM(string_object, value);
     // console.log(a);
 
     window.setTimeout(function () {
@@ -41,10 +41,10 @@ MyCode().then(Module => {
         document.write('Starting WASM do while loops<br>');
     }, 1);
     window.setTimeout(function () {
-        let start4 = new Date();
-        document.write('Total loops: ' + arrayIndexOfWASM('aaa', value, string_object) + '<br>');
-        let end4 = new Date() - start4;
-        document.write(end4 + ' ms<br>');
+        let start2 = new Date();
+        document.write('Total loops: ' + arrayIndexOfWASM(string_object, value) + '<br>');
+        let end2 = new Date() - start2;
+        document.write(end2 + ' ms<br>');
         document.close();
     }, 1);
 })
@@ -64,16 +64,16 @@ function arrayIndexOfJS(obj_arr, value) {
     // return count;
 }
 
-// function sendObject(obj_arr) {
-//     // obj_arr.forEach((obj_each, index) => {
-//     //     Object.keys(obj_each).forEach((key_each) => {
-//     //         !obj_each[key_each] && (obj_each[key_each] = "");
-//     //         mod.ccall('getObjectFromJS', null, ['string', 'string', 'number'], [key_each.toString(), obj_each[key_each].toString(), Object.keys(obj_arr[0]).length])
-//     //     });
-//     // });
-//     const obj = JSON.stringify(obj_arr);
-//     mod._getObjectFromJS(send_string(obj), obj_arr.length, Object.keys(obj_arr[0]).length);
-// }
+function sendObject(obj_arr) {
+    // obj_arr.forEach((obj_each, index) => {
+    //     Object.keys(obj_each).forEach((key_each) => {
+    //         !obj_each[key_each] && (obj_each[key_each] = "");
+    //         mod.ccall('getObjectFromJS', null, ['string', 'string', 'number'], [key_each.toString(), obj_each[key_each].toString(), Object.keys(obj_arr[0]).length])
+    //     });
+    // });
+    const obj = JSON.stringify(obj_arr);
+    mod._getObjectFromJS(send_string(obj), obj_arr.length, Object.keys(obj_arr[0]).length);
+}
 
 function send_string(string) {
     const lengthBytes = mod.lengthBytesUTF8(string) + 1; // get string length in bytes
@@ -82,9 +82,9 @@ function send_string(string) {
     return stringOnWasmHeap;
 }
 
-function arrayIndexOfWASM(key, value, obj_arr) {
-    const obj = JSON.stringify(obj_arr);
-    id = mod._arrayIndexOf(send_string(obj), send_string(value));
+function arrayIndexOfWASM(obj_arr, value) {
+    // const obj = JSON.stringify(obj_arr);
+    id = mod._arrayIndexOf(send_string(value), obj_arr.length, Object.keys(obj_arr[0]).length);
     return id;
 }
 

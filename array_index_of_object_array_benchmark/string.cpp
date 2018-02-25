@@ -92,53 +92,48 @@ void search(char *txt, char *pat)
 
 // vector<string> key;
 // int value_id = 0;
-// typedef map<pair<int, string>, string> obj_type;
-// obj_type obj;
+typedef map<pair<int, string>, char *> obj_type;
+obj_type obj;
 // int *len;
 
-// void getObjectFromJS(char *obj_arr, int array_length, int object_length)
-// {
-//     char *a;
-//     char *key;
-//     // printf("%s\n", obj_arr);
-//     strtok(obj_arr, "\"");
-//     for (int i = 0; i < array_length; i++)
-//     {
-//         for (int j = 0; j < object_length * 2; j++)
-//         {
-//             a = strtok(NULL, "{,\":}");
-//             if (j % 2 == 0)
-//                 key = a; //key
-//             if (j % 2 == 1)
-//             {
-//                 obj[make_pair(i, key)] = a; //value
-//             }
-//         }
-//     }
-//     free(obj_arr);
-// }
+void getObjectFromJS(char *obj_arr, int array_length, int object_length)
+{
+    char *a;
+    char *key;
+    // printf("%s\n", obj_arr);
+    strtok(obj_arr, "\"");
+    for (int i = 0; i < array_length; i++)
+    {
+        for (int j = 0; j < object_length * 2; j++)
+        {
+            a = strtok(NULL, "{,\":}");
+            if (j % 2 == 0)
+                key = a; //key
+            if (j % 2 == 1)
+            {
+                obj[make_pair(i, key)] = a; //value
+            }
+        }
+    }
+    free(obj_arr);
+}
 
-int arrayIndexOf(char *arr, char *value)
+int arrayIndexOf(char *value, int array_length, int object_length)
 {
     // int id_found;
     // int count;
 
-    // for (int i = 0; i < array_length; i++)
-    // {
-    //     for (int j = 0; j < object_length; j++)
-    //     {
-    //         if (boost::iequals(obj[make_pair(i, key_2)], value))
-    //         {
-    //             id_found = value_id;
-    //             // break;
-    //         }
-    //         count++;
-    //     }
-    // }
+    for (int i = 0; i < array_length; i++)
+    {
+        for (int j = 0; j < object_length; j++)
+        {
+            search(obj[make_pair(i, "aaa")], value);
+            // count++;
+        }
+    }
     // return count;
     // printf("%s\n", arr);
-    search(arr, value);
-    free(arr);
+    // free(arr);
     free(value);
 
     return 0;

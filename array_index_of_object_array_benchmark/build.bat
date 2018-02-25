@@ -1,1 +1,1 @@
-emcc string.cpp -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="'MyCode'" -s EXTRA_EXPORTED_RUNTIME_METHODS="['lengthBytesUTF8', 'getMemory', 'stringToUTF8']" -s EXPORTED_FUNCTIONS="['_arrayIndexOf']" -s TOTAL_MEMORY=25MB -o string.js && npx webpack
+emcc string.cpp -s WASM=1 -s MODULARIZE=1 -s EXPORT_NAME="'MyCode'" -s EXTRA_EXPORTED_RUNTIME_METHODS="['lengthBytesUTF8', 'getMemory', 'stringToUTF8']" -s EXPORTED_FUNCTIONS="['_getObjectFromJS', '_arrayIndexOf']" -s ALLOW_MEMORY_GROWTH=1 -o string.js && npx webpack
