@@ -1,1 +1,1 @@
-emcc string.cpp -s WASM=1 -o string.html
+em++ string.cpp -s WASM=1 -o string.html && del index.html && ren string.html index.html
