@@ -14,7 +14,7 @@
 !.vscode/extensions.json
 
 # misc
-assemblyscript
+/assemblyscript
 
 # System Files
 .DS_Store
