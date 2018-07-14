@@ -2,30 +2,8 @@ const _log = document.querySelector('.log');
 const myModule = get_module();
 let t0, t1;
 
-t0 = performance.now();
-const obj1 = [
-    {
-        "name": "Simon",
-        "tel": "01470913824",
-        "nationality": "Taiwan",
-        "age": 30
-    },
-    {
-        "name": "David",
-        "tel": "12384908079",
-        "nationality": "Germany",
-        "age": 15
-    },
-    {
-        "name": "John",
-        "tel": "30756098345",
-        "nationality": "Ireland",
-        "age": 54
-    },
-]
+import { obj1 } from './data.js'
 const name = obj1[2].name;
-t1 = performance.now();
-show_log('Writing to and reading from JS', false, t0, t1);
 
 t0 = performance.now();
 store_obj(obj1);
@@ -39,6 +17,40 @@ t1 = performance.now();
 show_log(a, true);
 show_log(b);
 show_log('Reading from WASM', false, t0, t1);
+
+let obj_found;
+
+t0 = performance.now();
+obj_found = find_obj(obj1, 'Ann Cole');
+t1 = performance.now();
+show_log(JSON.stringify(obj_found));
+show_log('Search from WASM', false, t0, t1);
+
+t0 = performance.now();
+obj_found = find_obj(obj1, 'Ann Cole');
+t1 = performance.now();
+show_log(JSON.stringify(obj_found));
+show_log('Search from JS', false, t0, t1);
+
+
+function find_obj(obj, value) {
+    const id = myModule.find_value(myModule.newString(value));
+    if (id > -1) return obj[id];
+}
+
+function find_obj_js(obj, value) {
+    for (let i = 0; i < arr.length; i++)
+        if (
+            obj[i].id.includes(value) ||
+            obj[i].name.includes(value) ||
+            obj[i].gender.includes(value) ||
+            obj[i].company.includes(value) ||
+            obj[i].email.includes(value) ||
+            obj[i].phone.includes(value) ||
+            obj[i].address.includes(value)
+        ) return obj[i];
+    return null;
+}
 
 function store_obj(obj) {
     const check_value = value => {
