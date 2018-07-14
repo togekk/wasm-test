@@ -4,13 +4,29 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "asc-build",
             "type": "shell",
             "command": "yarn run asbuild:optimized",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
+            "problemMatcher": []
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "npx parcel index.html",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "npx parcel build index.html --public-url ./ --no-source-maps",
             "problemMatcher": []
         }
     ]

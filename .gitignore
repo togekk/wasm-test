@@ -15,6 +15,7 @@
 
 # misc
 /assemblyscript
+/.cache
 
 # System Files
 .DS_Store

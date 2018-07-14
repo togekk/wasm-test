@@ -1,21 +1,20 @@
+const _log = document.querySelector('.log');
 const myModule = get_module();
-
 
 const a = makeid(5000, 50);
 const b = makeid(5000, 50);
 
-let t0 = performance.now();
 let ptr_arr = new Array();
 for (let i = 0; i < a.length; i++)
     ptr_arr.push(myModule.newString(a[i]));
 let ptr_arr_2 = new Array();
 for (let i = 0; i < b.length; i++)
     ptr_arr_2.push(myModule.newString(b[i]));
+let t0 = performance.now();
 const result = myModule.compare_string(ptr_arr[0], ptr_arr_2[0], ptr_arr.length, ptr_arr_2.length);
 let t1 = performance.now();
 
-console.log('wasm: ' + (result ? true : false));
-console.log('wasm: ' + (t1 - t0) + ' ms');
+show_console('wasm', t0, t1);
 
 t0 = performance.now();
 let found = false;
@@ -29,9 +28,21 @@ for (let i = 0; i < a.length; i++) {
 }
 t1 = performance.now();
 
-console.log('js: ' + found);
-console.log('js: ' + (t1 - t0) + ' ms');
+show_console('js', t0, t1);
 
+
+function show_console(str, start, end) {
+    const frag = document.createDocumentFragment();
+    let text;
+    let div;
+    // div = document.createElement('div');
+    // text = document.createTextNode('wasm: ' + (result ? true : false));
+    // frag.appendChild(div).appendChild(text);
+    div = document.createElement('div');
+    text = document.createTextNode(str + ': ' + (end - start) + ' ms');
+    frag.appendChild(div).appendChild(text);
+    _log.appendChild(frag);
+}
 
 function get_module() {
     const fs = require('fs');
