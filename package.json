@@ -4,5 +4,8 @@
     "asbuild:optimized": "asc assembly/index.ts -b build/optimized.wasm -t build/optimized.wat --sourceMap --validate --optimize --noDebug",
     "asbuild": "npm run asbuild:untouched && npm run asbuild:optimized"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "parcel-bundler": "^1.9.6"
+  }
 }
