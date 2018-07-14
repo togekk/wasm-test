@@ -1,45 +1,57 @@
 const _log = document.querySelector('.log');
 const myModule = get_module();
 
-const a = makeid(5000, 50);
-const b = makeid(5000, 50);
+const obj1 = {
+    "name": "Simon",
+    "tel": "01470913824",
+    "nat": "Ireland",
+    "age": "30"
+}
 
-let ptr_arr = new Array();
-for (let i = 0; i < a.length; i++)
-    ptr_arr.push(myModule.newString(a[i]));
-let ptr_arr_2 = new Array();
-for (let i = 0; i < b.length; i++)
-    ptr_arr_2.push(myModule.newString(b[i]));
-let t0 = performance.now();
-const result = myModule.compare_string(ptr_arr[0], ptr_arr_2[0], ptr_arr.length, ptr_arr_2.length);
-let t1 = performance.now();
+store_obj(obj1);
+// show_log(myModule.get_value(3), true);
+const t0 = performance.now();
+const a = myModule.get_value(0);
+const t1 = performance.now();
+show_log(a, true);
+show_log('wasm', false, t0, t1);
 
-show_console('wasm', t0, t1);
-
-t0 = performance.now();
-let found = false;
-for (let i = 0; i < a.length; i++) {
-    for (let j = 0; j < b.length; j++) {
-        if (a[i] === b[j]) {
-            found = true;
-            break;
+function store_obj(obj) {
+    const obj_val = Object.values(obj);
+    const check_value = value => {
+        if (typeof value === 'string') return myModule.newString(value);
+        else if (typeof value === 'number') {
+            const ptr = myModule.allocate_memory(1);
+            myModule.I32[ptr >>> 2] = value;
+            return ptr;
         }
     }
+
+    let ptr_arr = new Array();
+    let ptr_arr2 = new Array();
+    for (let i = 0; i < obj_val.length; i++) {
+        const value_ptr = check_value(obj_val[i]);
+        ptr_arr.push(value_ptr);
+    }
+    for (let i = 0; i < ptr_arr.length; i++) {
+        const ptr = myModule.allocate_memory(1);
+        myModule.I32[ptr >>> 2] = ptr_arr[i];
+        ptr_arr2.push(ptr);
+    }
+    myModule.store_obj(ptr_arr2[0], ptr_arr.length);
 }
-t1 = performance.now();
 
-show_console('js', t0, t1);
-
-
-function show_console(str, start, end) {
+function show_log(str, is_string, start, end) {
     const frag = document.createDocumentFragment();
     let text;
     let div;
-    // div = document.createElement('div');
-    // text = document.createTextNode('wasm: ' + (result ? true : false));
-    // frag.appendChild(div).appendChild(text);
     div = document.createElement('div');
-    text = document.createTextNode(str + ': ' + (end - start) + ' ms');
+
+    if (is_string) str = myModule.getString(str);
+
+    if (!!start && !!end)
+        text = document.createTextNode(str + ': ' + (end - start) + ' ms');
+    else text = document.createTextNode(str);
     frag.appendChild(div).appendChild(text);
     _log.appendChild(frag);
 }
@@ -54,17 +66,17 @@ function get_module() {
     return myModule;
 }
 
-function makeid(arr_len, len) {
-    let text;
-    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let arr = new Array();
-    for (let i = 0; i < arr_len; i++) {
-        text = "";
-        for (let j = 0; j < len; j++)
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        arr.push(text);
-    }
+// function makeid(arr_len, len) {
+//     let text;
+//     const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+//     let arr = new Array();
+//     for (let i = 0; i < arr_len; i++) {
+//         text = "";
+//         for (let j = 0; j < len; j++)
+//             text += possible.charAt(Math.floor(Math.random() * possible.length));
+//         arr.push(text);
+//     }
 
 
-    return arr;
-}
+//     return arr;
+// }
