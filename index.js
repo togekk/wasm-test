@@ -1,23 +1,46 @@
 const _log = document.querySelector('.log');
 const myModule = get_module();
+let t0, t1;
 
-const obj1 = {
-    "name": "Simon",
-    "tel": "01470913824",
-    "nat": "Ireland",
-    "age": "30"
-}
+t0 = performance.now();
+const obj1 = [
+    {
+        "name": "Simon",
+        "tel": "01470913824",
+        "nationality": "Taiwan",
+        "age": 30
+    },
+    {
+        "name": "David",
+        "tel": "12384908079",
+        "nationality": "Germany",
+        "age": 15
+    },
+    {
+        "name": "John",
+        "tel": "30756098345",
+        "nationality": "Ireland",
+        "age": 54
+    },
+]
+const name = obj1[2].name;
+t1 = performance.now();
+show_log('Writing to and reading from JS', false, t0, t1);
 
+t0 = performance.now();
 store_obj(obj1);
-// show_log(myModule.get_value(3), true);
-const t0 = performance.now();
-const a = myModule.get_value(0);
-const t1 = performance.now();
+t1 = performance.now();
+show_log('Writing to WASM', false, t0, t1);
+
+t0 = performance.now();
+const a = myModule.get_value(2, 0);
+const b = myModule.get_value_num(2, 3);
+t1 = performance.now();
 show_log(a, true);
-show_log('wasm', false, t0, t1);
+show_log(b);
+show_log('Reading from WASM', false, t0, t1);
 
 function store_obj(obj) {
-    const obj_val = Object.values(obj);
     const check_value = value => {
         if (typeof value === 'string') return myModule.newString(value);
         else if (typeof value === 'number') {
@@ -29,16 +52,25 @@ function store_obj(obj) {
 
     let ptr_arr = new Array();
     let ptr_arr2 = new Array();
-    for (let i = 0; i < obj_val.length; i++) {
-        const value_ptr = check_value(obj_val[i]);
-        ptr_arr.push(value_ptr);
+    for (let i = 0; i < obj.length; i++) {
+        const obj_val = Object.values(obj[i]);
+        ptr_arr[i] = new Array();
+        for (let j = 0; j < obj_val.length; j++) {
+            const value_ptr = check_value(obj_val[j]);
+            ptr_arr[i].push(value_ptr);
+        }
     }
+
     for (let i = 0; i < ptr_arr.length; i++) {
-        const ptr = myModule.allocate_memory(1);
-        myModule.I32[ptr >>> 2] = ptr_arr[i];
-        ptr_arr2.push(ptr);
+        ptr_arr2[i] = new Array();
+        for (let j = 0; j < ptr_arr[i].length; j++) {
+            const ptr = myModule.allocate_memory(1);
+            myModule.I32[ptr >>> 2] = ptr_arr[i][j];
+            ptr_arr2[i].push(ptr);
+        }
     }
-    myModule.store_obj(ptr_arr2[0], ptr_arr.length);
+    myModule.store_obj(ptr_arr2[0][0], ptr_arr2.length, ptr_arr2[0].length);
+    // console.log(myModule.getString(abc));
 }
 
 function show_log(str, is_string, start, end) {
